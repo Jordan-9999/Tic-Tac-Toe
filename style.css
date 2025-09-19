@@ -1,0 +1,46 @@
+
+body{
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    flex-direction: column;
+    height:100vh;
+    background-color:white;
+    font-family:Arial, Helvetica, sans-serif;
+}
+#game-title{
+    
+    padding:10px;
+}
+
+#game-container{
+    
+    display:grid;
+    grid-template-columns:auto auto auto;
+    gap:5px;
+    background-color:black;
+    width:90%;
+    min-width:300px;
+    max-width:500px;
+    height:55%;
+    min-height:300px;
+    max-height:500px;
+    padding:0px;
+    margin-bottom:250px;
+   
+}
+button{
+    height:100%;
+    min-height:100px;
+    max-height:300px;
+    width:100%;
+    min-width:100px;
+    max-width:300px;
+    font-size:5.0rem;
+    color:black;
+    font-weight: bold;
+    background-color:white;
+    border-style: none;
+    gap:0px;
+    
+}

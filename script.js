@@ -17,7 +17,7 @@ const gameBoard = (function (){
 
 
 
-const gameTurnsFunction = (function (){
+const gameTurnsObj = (function (){
 const gameTurns = {
  start : "game start",
  playerOneTurn : "player one's turn",
@@ -27,21 +27,21 @@ return gameTurns;
 })();
 
  const turn = function(){
-if(gameTurnsFunction.start == "game start"){
-    const option1 = gameTurnsFunction.playerOneTurn;
-    const option2 = gameTurnsFunction.playerTwoTurn;
+if(gameTurnsObj.start == "game start"){
+    const option1 = gameTurnsObj.playerOneTurn;
+    const option2 = gameTurnsObj.playerTwoTurn;
     const chosenOption = Math.random() < 0.5 ? option1 : option2;
     result = chosenOption;
-    gameTurnsFunction.start = result;
+    gameTurnsObj.start = result;
     //console.log("random initial choice was made");
   }
  
 else{
-  if(result == gameTurnsFunction.playerOneTurn){
-    result = gameTurnsFunction.playerTwoTurn;
+  if(result == gameTurnsObj.playerOneTurn){
+    result = gameTurnsObj.playerTwoTurn;
   }
-  else{result = gameTurnsFunction.playerOneTurn};};
-
+  else{result = gameTurnsObj.playerOneTurn};};
+  console.log(result);
   return result;
  };
 
@@ -61,12 +61,14 @@ else{
   let result = "no match";
 
   for(let i=0; i< winningCombinations.length; i++){
-    console.log(playerOne.playerOneArray, playerTwo.playerTwoArray, winningCombinations[i]);
+    //console.log(playerOne.playerOneArray, playerTwo.playerTwoArray, winningCombinations[i]);
     if (winningCombinations[i].every(item => playerOne.playerOneArray.includes(item)) === true){
       result = "player one wins";
+      console.log("player one match");
     }
     else if(winningCombinations[i].every(item => playerTwo.playerTwoArray.includes(item)) === true){
       result = "player two wins";
+      console.log("player two match");
     }
   };
   return result;
@@ -80,6 +82,10 @@ const gameOver = function(){
   else if(checkForCombinations() == "player two wins"){
     alert("player two wins")
   }
+
+  else if(gameBoard.gameBoardArr.length === 0){
+    alert("it's a tie!")
+  }
 };
 
  
@@ -92,32 +98,66 @@ const gameOver = function(){
    if(turnResult == "player one's turn"){
     playerOne.playerOneArray.push(...splicedNum);
     playerOne.playerOneArray.sort();
-    console.log(playerOne.playerOneArray, "player one");
+    //console.log(playerOne.playerOneArray, "player one");
    }
    else{
     playerTwo.playerTwoArray.push(...splicedNum);
     playerTwo.playerTwoArray.sort();
-    console.log(playerTwo.playerTwoArray, "player two");
+   // console.log(playerTwo.playerTwoArray, "player two");
    }
 
     
 checkForCombinations();
 gameOver();
-
+return turnResult;
  };
 
+const display = {
+
+ gameBoardDisplay : function(){
+  let gameTitle = document.getElementById("game-title");
+  let turnCard = document.createElement("div");
+  let turnDisplay = turn();
+  turnCard.textContent = turnDisplay;
+  gameTitle.appendChild(turnCard);
+ 
+  let gameContainer = document.getElementById("game-container");
+  for(let i=0; i < gameBoard.gameBoardArr.length; i++){
+    let gameBoardButton = document.createElement("button")
+    let gameBoardButtonValue = gameBoard.gameBoardArr[i];
+  
+    gameContainer.appendChild(gameBoardButton);
+    gameBoardButton.addEventListener('click', function(){
+      if(turnDisplay === "player one's turn"){gameBoardButton.textContent = "X"}
+      else{gameBoardButton.textContent = "O"}
+      
+      turnDisplay = playerMark(gameBoardButtonValue);
+      turnCard.textContent = turnDisplay;
+      gameBoardButton.disabled = true;
+    });
+  }
+  
+  
+}
+
+};
+display.gameBoardDisplay();
 
 
 
 
 
-
+/*
+playerMark(1);
+playerMark(2);
+playerMark(8);
+playerMark(4);
 playerMark(3);
 playerMark(6);
-playerMark(1);
-playerMark(4);
-playerMark(2);
-console.log(gameBoard);
+playerMark(5);
+playerMark(9);
+playerMark(7);*/
+console.log(gameBoard.gameBoardArr);
 
 
 
