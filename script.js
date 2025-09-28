@@ -41,7 +41,6 @@ else{
     result = gameTurnsObj.playerTwoTurn;
   }
   else{result = gameTurnsObj.playerOneTurn};};
-  console.log(result);
   return result;
  };
 
@@ -93,12 +92,12 @@ const gameOver = function(){
  const playerMark = function(playerChoice){
     const index = gameBoard.gameBoardArr.indexOf(playerChoice);
     let splicedNum = gameBoard.gameBoardArr.splice(index, 1);
-
+    
      let turnResult = turn();
    if(turnResult == "player one's turn"){
     playerOne.playerOneArray.push(...splicedNum);
     playerOne.playerOneArray.sort();
-    //console.log(playerOne.playerOneArray, "player one");
+    
    }
    else{
     playerTwo.playerTwoArray.push(...splicedNum);
@@ -118,6 +117,9 @@ const display = {
   let gameTitle = document.getElementById("game-title");
   let turnCard = document.createElement("div");
   let turnDisplay = turn();
+  if(turnDisplay === "player one's turn"){
+    turnDisplay = "player two's turn"
+  } else{turnDisplay = "player one's turn"};
   turnCard.textContent = turnDisplay;
   gameTitle.appendChild(turnCard);
  
@@ -128,13 +130,21 @@ const display = {
   
     gameContainer.appendChild(gameBoardButton);
     gameBoardButton.addEventListener('click', function(){
+
+      turnDisplay = playerMark(gameBoardButtonValue);
       if(turnDisplay === "player one's turn"){gameBoardButton.textContent = "X"}
       else{gameBoardButton.textContent = "O"}
       
-      turnDisplay = playerMark(gameBoardButtonValue);
+      if(turnDisplay === "player one's turn"){
+        turnDisplay = "player two's turn"
+      } else{turnDisplay = "player one's turn"};
       turnCard.textContent = turnDisplay;
       gameBoardButton.disabled = true;
+      console.log(playerOne.playerOneArray, playerTwo.playerTwoArray);
+      
+
     });
+    
   }
   
   
