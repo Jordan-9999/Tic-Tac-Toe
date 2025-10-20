@@ -33,7 +33,6 @@ if(gameTurnsObj.start == "game start"){
     const chosenOption = Math.random() < 0.5 ? option1 : option2;
     result = chosenOption;
     gameTurnsObj.start = result;
-    //console.log("random initial choice was made");
   }
  
 else{
@@ -74,17 +73,23 @@ else{
 };
 
 const gameOver = function(){
-  
+  let gameOverResult = false;
   if (checkForCombinations() == "player one wins"){
-    alert("player one wins!")
+    gameOverResult = true;
+    turn();
+    //alert("player one wins!")
   }
   else if(checkForCombinations() == "player two wins"){
-    alert("player two wins")
+    gameOverResult = true;
+    turn();
+    //alert("player two wins")
   }
 
   else if(gameBoard.gameBoardArr.length === 0){
-    alert("it's a tie!")
+    gameOverResult = false;
+    //alert("it's a tie!")
   }
+  return gameOverResult;
 };
 
  
@@ -107,47 +112,153 @@ const gameOver = function(){
 
     
 checkForCombinations();
-gameOver();
+//gameOver();
 return turnResult;
  };
 
 const display = {
-
+  
  gameBoardDisplay : function(){
   let gameTitle = document.getElementById("game-title");
+  const newGameButton = document.getElementById("new-game");
+  const newGameDialog = document.getElementById("new-game-dialog");
+  const playerOneName = document.getElementById("player-one-name");
+  const playerTwoName = document.getElementById("player-two-name");
+  const confirmBtn = document.getElementById("confirm-btn");
+  const gameOverDialog = document.getElementById("game-over-dialog");
+  const winnerAnnouncement = document.getElementById("winner-announcement");
+  const gameOverClose = document.getElementById("game-over-close");
+  const gameOverNewGame = document.getElementById("game-over-new-game");
+
+  
+  newGameButton.addEventListener("click", function(){
+    newGameDialog.showModal();
+  });
+  newGameDialog.addEventListener("close", function(){
+  });
+  confirmBtn.addEventListener("click", function(){
+    event.preventDefault();
+    while(gameContainer.firstChild){
+      gameContainer.removeChild(gameContainer.firstChild);
+    };
+    gameBoard.gameBoardArr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    playerOne.playerOneArray = [];
+    playerTwo.playerTwoArray = [];
+    
+    createDisplayBoard();
+    
+    let turnDisplay = turn();
+
+    if (playerOneName.value == ""){
+      playerOneName.value = "player one"
+    };
+    if(playerTwoName.value == ""){
+      playerTwoName.value = "player two"
+    };
+
+    if(turnDisplay === "player one's turn"){
+      turnDisplay = playerTwoName.value;
+    } else{turnDisplay = playerOneName.value};
+    turnCard.textContent = turnDisplay + "'s turn";
+    gameTitle.appendChild(turnCard);
+    newGameDialog.close();
+  });
+
+  gameOverClose.addEventListener("click", function(){
+    console.log("it closed")
+    gameOverDialog.close();
+  });
+  gameOverNewGame.addEventListener("click", function(){
+    event.preventDefault();
+    while(gameContainer.firstChild){
+      gameContainer.removeChild(gameContainer.firstChild);
+    };
+    gameBoard.gameBoardArr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    playerOne.playerOneArray = [];
+    playerTwo.playerTwoArray = [];
+    
+    createDisplayBoard();
+    
+    let turnDisplay = turn();
+
+    if (playerOneName.value == ""){
+      playerOneName.value = "player one"
+    };
+    if(playerTwoName.value == ""){
+      playerTwoName.value = "player two"
+    };
+
+    if(turnDisplay === "player one's turn"){
+      turnDisplay = playerTwoName.value;
+    } else{turnDisplay = playerOneName.value};
+    turnCard.textContent = turnDisplay + "'s turn";
+    gameTitle.appendChild(turnCard);
+    gameOverDialog.close();
+  })
+
   let turnCard = document.createElement("div");
-  let turnDisplay = turn();
-  if(turnDisplay === "player one's turn"){
-    turnDisplay = "player two's turn"
-  } else{turnDisplay = "player one's turn"};
-  turnCard.textContent = turnDisplay;
-  gameTitle.appendChild(turnCard);
+  
  
   let gameContainer = document.getElementById("game-container");
+
+  const buttonDisable = function(){
+    const gameButton = document.querySelectorAll('.game-button');
+    gameButton.forEach(button => button.disabled = true);
+    gameContainer.style.backgroundColor = "lightgray";
+   
+  };
+  const buttonEnable = function(){
+    const gameButton = document.querySelectorAll('.game-button');
+    gameButton.forEach(button => button.disabled = false);
+    gameContainer.style.backgroundColor = "black";
+   
+  };
+
+  const createDisplayBoard = function(){
   for(let i=0; i < gameBoard.gameBoardArr.length; i++){
-    let gameBoardButton = document.createElement("button")
+    let gameBoardButton = document.createElement("button");
+    gameBoardButton.classList.add("game-button");
     let gameBoardButtonValue = gameBoard.gameBoardArr[i];
-  
     gameContainer.appendChild(gameBoardButton);
+
+    
+  
+
+
     gameBoardButton.addEventListener('click', function(){
 
       turnDisplay = playerMark(gameBoardButtonValue);
+      let currentTurn = turnDisplay;
       if(turnDisplay === "player one's turn"){gameBoardButton.textContent = "X"}
       else{gameBoardButton.textContent = "O"}
       
       if(turnDisplay === "player one's turn"){
-        turnDisplay = "player two's turn"
-      } else{turnDisplay = "player one's turn"};
+        turnDisplay = playerTwoName.value + "'s turn";
+        currentTurn = playerOneName.value;
+      } else{turnDisplay = playerOneName.value + "'s turn";
+        currentTurn = playerTwoName.value;
+      };
       turnCard.textContent = turnDisplay;
       gameBoardButton.disabled = true;
       console.log(playerOne.playerOneArray, playerTwo.playerTwoArray);
-      
-
+      if(gameOver() == true){
+        turnCard.textContent = "";
+        console.log("the game ended");
+        buttonDisable();
+        winnerAnnouncement.textContent = currentTurn + " wins";
+        gameOverDialog.showModal();
+      }
+     else if(gameOver() == false && gameBoard.gameBoardArr.length === 0){
+      turnCard.textContent = "";
+      winnerAnnouncement.textContent = "It's a tie!"
+      gameOverDialog.showModal();
+      turn();
+     }
     });
-    
-  }
-  
-  
+    buttonEnable();
+  }};
+  createDisplayBoard();
+  buttonDisable();
 }
 
 };
@@ -157,16 +268,7 @@ display.gameBoardDisplay();
 
 
 
-/*
-playerMark(1);
-playerMark(2);
-playerMark(8);
-playerMark(4);
-playerMark(3);
-playerMark(6);
-playerMark(5);
-playerMark(9);
-playerMark(7);*/
+
 console.log(gameBoard.gameBoardArr);
 
 

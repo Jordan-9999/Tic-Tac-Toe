@@ -8,6 +8,45 @@
 </head>
 <body>
     <h1 id="game-title">Tic Tac Toe</h1>
+
+<dialog id="new-game-dialog"> 
+    <form action="">
+        <div>
+            <label for="player-one-name">Player one:</label>
+            <input type="text" id="player-one-name" name="player-one-name" 
+             placeholder="enter your name here!">
+        </div>
+
+        <div>
+            <label for="player-two-name">Player Two:</label>
+            <input type="text" id="player-two-name" name="player-two-name"
+            placeholder="enter your name here!">
+        </div>
+
+        <div></div>
+            <button value="cancel" formmethod="dialog">Cancel</button>
+            <button id="confirm-btn" value="default">Start game</button>
+        </div>
+    </form>
+       </dialog>
+
+     
+     <dialog id="game-over-dialog">
+       
+         <p id="winner-announcement"></p>
+        
+
+        <div>
+         <p>Do you want to play again?</p>
+        </div>
+
+        <div>
+            <button id="game-over-close" value="cancel" formmethod="dialog">No</button>
+            <button id="game-over-new-game" value="default">Yes</button>
+        </div>
+     </dialog>
+
+    <button id="new-game">New Game</button>
     <div id="game-container"></div>
 
     <script src="script.js"></script>

@@ -29,7 +29,14 @@ body{
     margin-bottom:250px;
    
 }
-button{
+.game-container-toggled{
+    background-color:lightgray; 
+}
+.game-container-default{
+    background-color: blue;
+}
+
+.game-button{
     height:100%;
     min-height:100px;
     max-height:300px;
@@ -44,3 +51,18 @@ button{
     gap:0px;
     
 }
+#new-game{
+    font-size:1.2em;
+    height:50px;
+    width:140px;
+    margin-bottom:10px;
+}
+#new-game-dialog{
+    padding:100px;
+}
+#player-one-name{
+   font-size: large;
+}
+#player-two-name{
+    font-size: large;
+ }
