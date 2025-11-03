@@ -58,11 +58,40 @@ body{
     margin-bottom:10px;
 }
 #new-game-dialog{
-    padding:100px;
+    padding:70px;
+    
 }
 #player-one-name{
    font-size: large;
+   margin-bottom:10px;
+   padding:10px
+  
 }
 #player-two-name{
     font-size: large;
+    margin-bottom:10px;
+    padding:10px;
+ }
+ #confirm-btn{
+    font-size: large;
+    padding:10px;
+ }
+ #cancel-btn{
+    font-size: large;
+    padding:10px;
+ }
+ #game-over-dialog{
+    padding:70px;
+ }
+ #winner-announcement{
+    font-size:large;
+    font-weight: bold;
+ }
+ #game-over-close{
+    font-size: large;
+    padding:10px;
+ }
+ #game-over-new-game{
+    font-size: large;
+    padding:10px;
  }
